@@ -133,3 +133,5 @@ CREATE TABLE Pagos (
   fecha_pago DATE not null
  );
     alter table Pagos add foreign key (ID_Reserva) references reservas(ID_Reserva);
+
+--cambio en linia
