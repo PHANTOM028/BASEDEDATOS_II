@@ -78,17 +78,17 @@ Use Reserva_Hotel;
 			alter table Consumos add foreign key (ID_Producto) references Productos(ID_Producto);
 
 -- Tabla PAGOS
-CREATE TABLE Pagos (
-  ID_Pago int primary key identity(1, 1),
-  ID_Reserva INT not null,  --fk
-  ID_Cliente int not null, --fk
-  tipo_Pago varchar (100) not null,
-  tipo_comprobante VARCHAR(100) not null,
-  num_comprobante VARCHAR(20) not null,
-  igv DECIMAL(10,2) not null,
-  total_pago DECIMAL(10,2) not null,
-  fecha_emision DATE not null,
-  fecha_pago DATE not null
- );
-		alter table Pagos add foreign key (ID_Reserva) references reservas(ID_Reserva);
-		alter table Pagos add foreign key (ID_Cliente) references Clientes(ID_Cliente);
+	CREATE TABLE Pagos (
+  		ID_Pago int primary key identity(1, 1),
+  		ID_Reserva INT not null,  --fk
+  		ID_Cliente int not null, --fk
+  		tipo_Pago varchar (100) not null,
+  		tipo_comprobante VARCHAR(100) not null,
+ 	 	num_comprobante VARCHAR(20) not null,
+  		igv DECIMAL(10,2) not null,
+  		total_pago DECIMAL(10,2) not null,
+  		fecha_emision DATE not null,
+  		fecha_pago DATE not null
+ 		);
+			alter table Pagos add foreign key (ID_Reserva) references reservas(ID_Reserva);
+			alter table Pagos add foreign key (ID_Cliente) references Clientes(ID_Cliente);
