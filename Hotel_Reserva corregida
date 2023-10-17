@@ -1,0 +1,119 @@
+create database Hotel_Reserva;
+
+Use Hotel_Reserva;
+
+-- Tabla DescripcionHabitacion
+	create table DescripcionHabitacion (
+		ID_DescripcionHabitacion int primary key identity(1,1),
+		Tipo_habitacion VARCHAR(20) not null,
+		Nombre VARCHAR (50) not null,
+		Descripcion VARCHAR(255) not null,
+		Precio_diario DECIMAL(7,2) not null,
+		Numero VARCHAR(255) not null,
+		NumeroAdultos VARCHAR(255) not null,
+		NumeroNiños VARCHAR(255) not null,
+		Piso VARCHAR(255) not null ,
+		Estado VARCHAR(15) not null
+		);
+
+
+-- Tabla Servicios
+	create table Servicios (
+		ID_Servicio int primary key identity(1, 1),
+		nombre VARCHAR(100) not null,
+		descripcion VARCHAR(255) not null,
+		unidad_medida VARCHAR(100) not null,
+		precio_venta DECIMAL(10,2) not null
+		);
+
+
+-- Tabla Cliente
+	create table Cliente (
+		ID_Cliente int primary key identity(1, 1),
+		Nombre VARCHAR(100) not null,
+		Apellido VARCHAR(100) not null,
+		Tipo_documento VARCHAR(100) not null,
+		Num_documento VARCHAR(100) not null,
+		Pais VARCHAR (50) not null,
+		Direccion VARCHAR(100) not null,
+		Telefono VARCHAR(100) not null,
+		Email VARCHAR(100) not null
+		);
+
+-- Tabla Usuarios
+	create table Usuario (
+		ID_Usuario int primary key identity(1, 1),
+		ID_Rol int not null,
+		Usuario VARCHAR (60) not null,
+		Clave VARCHAR(60) not null
+		);
+
+-- Tabla Habitaciones
+	create table Habitaciones (
+		ID_Habitacion int primary key identity(1, 1),
+		ID_DescripcionHabitacion int not null, --FK
+		ID_Empleado int , --FK
+		Nombre VARCHAR(15) not null		
+		);
+			alter table Habitaciones add foreign key (ID_DescripcionHabitacion) references DescripcionHabitacion(ID_DescripcionHabitacion);
+			alter table Habitaciones add foreign key (ID_Empleado) references Empleados(ID_Empleado);
+
+
+-- Tabla Empleados
+	create table Empleados (
+		ID_Empleado int primary key identity(1, 1),
+		ID_Habitacion int not null, --FK
+		ID_Usuario int,
+		Nombre VARCHAR(100) not null,
+		Apellido VARCHAR(100) not null,
+		Cargo VARCHAR(100) not null,
+		Sueldo DECIMAL(10,2) not null,
+		acceso VARCHAR(100) not null,
+		login VARCHAR(100) not null,
+		password VARCHAR(200) not null,
+		estado VARCHAR(100) not null
+		);
+			alter table Empleados add foreign key (ID_Habitacion) references Habitaciones(ID_Habitacion);
+			alter table Empleados add foreign key (ID_Usuario) references Usuario(ID_Usuario);
+
+-- Tabla DetalleReserva
+create table DetallesReserva (
+		ID_DetallesReserva int primary key identity(1, 1),
+		ID_Habitacion INT not null, --FK
+		ID_Cliente INT not null,    --FK
+		ID_Servicio int not null, --FK
+		tipo_reserva VARCHAR(100)not null,
+		fecha_reserva DATE not null,
+		fecha_ingreso DATE not null,
+		fecha_salida DATE not null,
+		cantidad VARCHAR not null,
+		costo_alojamiento DECIMAL(10,2) not null,
+		estado VARCHAR(100) not null
+		);
+			alter table DetallesReserva add foreign key (ID_Habitacion) references Habitaciones(ID_Habitacion);
+			alter table DetallesReserva add foreign key (ID_Servicio) references Servicios(ID_Servicio);
+			alter table DetallesReserva add foreign key (ID_Cliente) references Cliente(ID_Cliente);
+
+
+-- Tabla Reserva
+	create table Reserva (
+		ID_Reserva int primary key identity(1, 1),
+		ID_DetallesReserva int ,
+		Cantidad VARCHAR(100)not null
+		);
+			alter table Reserva add foreign key (ID_DetallesReserva) references DetallesReserva(ID_DetallesReserva);
+
+
+-- Tabla Pagos
+	create table Pagos (
+		ID_Pago int primary key identity(1, 1),
+		ID_Reserva INT not null,  --FK
+		tipo_Pago varchar (100) not null,
+		tipo_comprobante VARCHAR(100) not null,
+		num_comprobante VARCHAR(20) not null,
+		IVA DECIMAL(10,2) not null,
+		total_pago DECIMAL(10,2) not null,
+		fecha_emision DATE not null,
+		fecha_pago DATE not null
+		);
+			alter table Pagos add foreign key (ID_Reserva) references Reserva(ID_Reserva);
