@@ -1,0 +1,94 @@
+create database Reserva_Hotel;
+
+Use Reserva_Hotel;
+
+-- CREACION DE TABLAS
+
+-- Tabla HABITACIONES
+	create table Habitaciones (
+		ID_Habitacion int primary key identity(1, 1),
+		Numero VARCHAR(255) not null,
+		Piso VARCHAR(255) not null ,
+		Descripcion VARCHAR(255) not null,
+		Caracteristicas VARCHAR(512) not null,
+		Precio_diario DECIMAL(7,2) not null,
+		Estado VARCHAR(15) not null,
+		Tipo_habitacion VARCHAR(20) not null
+		);
+
+-- Tabla TRABAJADOR
+	create table Trabajadores (
+		ID_Trabajador int primary key identity(1, 1),
+		NombreTrabajador VARCHAR(100) not null,
+		ApellidoTrabajador VARCHAR(100) not null,
+		Cargo VARCHAR(100) not null,
+		sueldo DECIMAL(10,2) not null,
+		acceso VARCHAR(100) not null,
+		login VARCHAR(100) not null,
+		password VARCHAR(200) not null,
+		estado VARCHAR(100) not null
+		);
+
+-- Tabla PRODUCTO
+	create table Productos (
+		ID_Producto int primary key identity(1, 1),
+		nombre VARCHAR(100) not null,
+		descripcion VARCHAR(255) not null,
+		unidad_medida VARCHAR(100) not null,
+		precio_venta DECIMAL(10,2) not null
+		);
+
+-- Tabla CLIENTES
+	create table Clientes (
+		ID_Cliente int primary key identity(1, 1),
+		NombreCliente VARCHAR(100) not null,
+		ApellidoCliente VARCHAR(100) not null,
+		Tipo_documento VARCHAR(100) not null,
+		Num_documento VARCHAR(100) not null,
+		Direccion VARCHAR(100) not null,
+		Telefono VARCHAR(100) not null,
+		Email VARCHAR(100) not null
+		);
+	
+-- Tabla RESERVA
+	create table reservas (
+		ID_Reserva int primary key identity(1, 1),
+		ID_Habitacion INT not null, --fk
+		ID_Cliente INT not null,    --fk
+		tipo_reserva VARCHAR(100)not null,
+		fecha_reserva DATE not null,
+		fecha_ingreso DATE not null,
+		fecha_salida DATE not null,
+		costo_alojamiento DECIMAL(10,2) not null,
+		estado VARCHAR(100) not null
+		);
+			alter table reservas add foreign key (ID_Habitacion) references Habitaciones(ID_Habitacion);
+			alter table reservas add foreign key (ID_Cliente) references Clientes(ID_Cliente);
+
+-- Tabla CONSUMO
+	CREATE TABLE Consumos (
+		ID_Consumo int primary key identity(1, 1),
+		ID_Reserva INT  not null, --fk
+		ID_Producto INT  not null, --fk
+		cantidad DECIMAL(10,2)  not null,
+		precio_venta DECIMAL(10,2) not null,
+		estado VARCHAR(100)  not null
+		);
+			alter table Consumos add foreign key (ID_Reserva) references reservas(ID_Reserva);
+			alter table Consumos add foreign key (ID_Producto) references Productos(ID_Producto);
+
+-- Tabla PAGOS
+	CREATE TABLE Pagos (
+  		ID_Pago int primary key identity(1, 1),
+  		ID_Reserva INT not null,  --fk
+  		ID_Cliente int not null, --fk
+  		tipo_Pago varchar (100) not null,
+  		tipo_comprobante VARCHAR(100) not null,
+ 	 	num_comprobante VARCHAR(20) not null,
+  		igv DECIMAL(10,2) not null,
+  		total_pago DECIMAL(10,2) not null,
+  		fecha_emision DATE not null,
+  		fecha_pago DATE not null
+ 		);
+			alter table Pagos add foreign key (ID_Reserva) references reservas(ID_Reserva);
+			alter table Pagos add foreign key (ID_Cliente) references Clientes(ID_Cliente);
